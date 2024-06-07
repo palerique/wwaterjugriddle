@@ -13,8 +13,9 @@ RUN apk update
 # Set working directory
 WORKDIR /app
 RUN pnpm install turbo --global
+RUN pnpm install husky --global
 COPY . .
-RUN turbo prune web --docker
+RUN turbo prune docs --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
@@ -38,7 +39,7 @@ COPY turbo.json turbo.json
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN pnpm turbo build --filter=web...
+RUN pnpm turbo build --filter=docs...
 
 FROM base AS runner
 WORKDIR /app
@@ -48,13 +49,13 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 USER nextjs
 
-COPY --from=installer /app/apps/web/next.config.mjs .
-COPY --from=installer /app/apps/web/package.json .
+COPY --from=installer /app/apps/docs/next.config.mjs .
+COPY --from=installer /app/apps/docs/package.json .
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
-COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+COPY --from=installer --chown=nextjs:nodejs /app/apps/docs/.next/server ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/docs/.next/static ./apps/web/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/docs/public ./apps/web/public
 
-CMD node apps/web/server.js
+CMD node apps/docs/server.js

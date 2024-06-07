@@ -20,13 +20,13 @@ export default function Home() {
     const [steps, setSteps] = useState<StepDto[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [currentStep, setCurrentStep] = useState<number | null>(null);
+    const [currentStep, setCurrentStep] = useState<number>(-1);
 
     const solveWaterJug = async () => {
         setLoading(true);
         setError('');
         setSteps([]);
-        setCurrentStep(null);
+        setCurrentStep(-1);
 
         try {
             const response = await axios.post('/api/solve', {
@@ -62,6 +62,7 @@ export default function Home() {
         }
     }, [steps]);
 
+    let stepDto = steps[currentStep];
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 text-white">
             <h1 className="text-5xl font-bold mb-10">Water Jug Solver</h1>
@@ -72,7 +73,9 @@ export default function Home() {
                         <input
                             type="number"
                             value={x}
-                            onChange={(e) => setX(Math.max(1, parseInt(e.target.value)))}
+                            onChange={(e) => {
+                                return setX(String(Math.max(1, parseInt(e.target.value))));
+                            }}
                             min="1" // disallows negative numbers or zeroes
                             className="w-full px-4 py-2 rounded-lg border focus:ring focus:border-blue-300"
                         />
@@ -82,7 +85,7 @@ export default function Home() {
                         <input
                             type="number"
                             value={y}
-                            onChange={(e) => setY(Math.max(1, parseInt(e.target.value)))}
+                            onChange={(e) => setY(String(Math.max(1, parseInt(e.target.value))))}
                             min="1" // disallows negative numbers or zeroes
                             className="w-full px-4 py-2 rounded-lg border focus:ring focus:border-blue-300"
                         />
@@ -92,7 +95,7 @@ export default function Home() {
                         <input
                             type="number"
                             value={z}
-                            onChange={(e) => setZ(Math.max(1, parseInt(e.target.value)))}
+                            onChange={(e) => setZ(String(Math.max(1, parseInt(e.target.value))))}
                             min="1" // disallows negative numbers or zeroes
                             className="w-full px-4 py-2 rounded-lg border focus:ring focus:border-blue-300"
                         />
@@ -118,17 +121,17 @@ export default function Home() {
             {steps.length > 0 && (<div className="mt-10 w-full flex flex-col items-center">
                 <h2 className="text-3xl font-bold mb-6">Solution Steps</h2>
                 <div className="mb-4">
-                    {currentStep !== null && steps[currentStep] && (
+                    {currentStep !== null && stepDto && (
                         <div className="bg-white text-black p-4 mb-4 rounded-lg shadow-md flex flex-col items-center">
-                            <span className="font-bold">Step {steps[currentStep].step}:</span>
-                            <span>{steps[currentStep].action}</span>
+                            <span className="font-bold">Step {stepDto.step}:</span>
+                            <span>{stepDto.action}</span>
                             <div className="flex space-x-2 mt-2">
                                 <SmallBucket name="Bucket X"
                                              capacity={parseInt(x)}
-                                             current={steps[currentStep].bucketX} />
+                                             current={stepDto.bucketX} />
                                 <SmallBucket name="Bucket Y"
                                              capacity={parseInt(y)}
-                                             current={steps[currentStep].bucketY} />
+                                             current={stepDto.bucketY} />
                             </div>
                         </div>)}
                 </div>

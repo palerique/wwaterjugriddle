@@ -18,7 +18,25 @@ services:
       dockerfile: ./apps/api/Dockerfile
     restart: always
     ports:
+      - 3002:3002
+    networks:
+      - app_network
+  doc:
+    container_name: doc
+    build:
+      context: .
+      dockerfile: ./apps/docs/Dockerfile
+    restart: always
+    ports:
       - 3001:3001
+    networks:
+      - app_network
+  redis:
+    container_name: redis
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
     networks:
       - app_network
 
