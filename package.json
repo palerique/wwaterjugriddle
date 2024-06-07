@@ -1,20 +1,49 @@
 {
   "name": "basic-turborepo",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo build",
+    "clean": "turbo run clean",
     "dev": "turbo dev",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "prepare": "husky",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck"
+  },
+  "lint-staged": {
+    "*.md,package.json": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.0.0",
+    "@commitlint/config-conventional": "^19.0.0",
+    "@commitlint/config-pnpm-scopes": "^18.4.4",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@semantic-release/git": "^10.0.1",
+    "conventional-changelog-conventionalcommits": "^7.0.2",
+    "gradle-semantic-release-plugin": "1.9.1",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
+    "pinst": "^3.0.0",
     "prettier": "^3.2.5",
+    "semantic-release": "^23.0.0",
     "turbo": "latest"
   },
   "packageManager": "pnpm@8.15.6",
   "engines": {
-    "node": ">=18"
+    "node": "^20.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "ip@<1.1.9": ">=1.1.9",
+      "ip@=2.0.0": ">=2.0.1"
+    }
   }
 }

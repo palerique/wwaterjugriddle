@@ -1,0 +1,35 @@
+{
+    "tagFormat": "${version}",
+    "branches": [
+        {
+            "name": "main"
+        },
+        {
+            "name": "develop",
+            "prerelease": true
+        }
+    ],
+    "plugins": [
+        "@semantic-release/commit-analyzer",
+        "@semantic-release/release-notes-generator",
+        "gradle-semantic-release-plugin",
+        [
+            "@semantic-release/git",
+            {
+                "assets": [
+                    "gradle.properties"
+                ],
+                "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+            }
+        ],
+        [
+            "@semantic-release/github",
+            {
+                "assets": [
+                    "**/build/libs/*.jar",
+                    "**/build/reports/*"
+                ]
+            }
+        ]
+    ]
+}
