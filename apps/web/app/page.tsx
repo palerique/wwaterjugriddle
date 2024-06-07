@@ -118,7 +118,7 @@ export default function Home() {
             {steps.length > 0 && (<div className="mt-10 w-full flex flex-col items-center">
                 <h2 className="text-3xl font-bold mb-6">Solution Steps</h2>
                 <div className="mb-4">
-                    {currentStep !== null && (
+                    {currentStep !== null && steps[currentStep] && (
                         <div className="bg-white text-black p-4 mb-4 rounded-lg shadow-md flex flex-col items-center">
                             <span className="font-bold">Step {steps[currentStep].step}:</span>
                             <span>{steps[currentStep].action}</span>
