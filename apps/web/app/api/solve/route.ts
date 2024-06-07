@@ -5,7 +5,8 @@ export async function POST(req: NextRequest) {
     const { x_capacity, y_capacity, z_amount_wanted } = await req.json();
 
     try {
-        const response = await axios.post('http://localhost:3002/waterjugriddle/solve', {
+        //TODO: get this from env variables or change it during the build process
+        const response = await axios.post('http://api:3002/waterjugriddle/solve', {
             x_capacity, y_capacity, z_amount_wanted,
         });
         return NextResponse.json(response.data);
