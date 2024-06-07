@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { WaterjugriddleModule } from './waterjugriddle/waterjugriddle.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [CacheModule.register({ isGlobal: true }), WaterjugriddleModule],
 })
 export class AppModule {
 }
