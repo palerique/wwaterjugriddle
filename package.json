@@ -1,5 +1,5 @@
 {
-  "name": "basic-turborepo",
+  "name": "water-jug-riddle",
   "private": true,
   "workspaces": [
     "apps/*",
