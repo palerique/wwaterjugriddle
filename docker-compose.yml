@@ -11,6 +11,8 @@ services:
       - 3000:3000
     networks:
       - app_network
+    environment:
+      - SERVER_URL=http://api:3002
   api:
     container_name: api
     build:

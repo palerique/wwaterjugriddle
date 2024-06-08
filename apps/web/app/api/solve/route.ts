@@ -3,10 +3,9 @@ import axios from 'axios';
 
 export async function POST(req: NextRequest) {
     const { x_capacity, y_capacity, z_amount_wanted } = await req.json();
-
     try {
-        //TODO: get this from env variables or change it during the build process
-        const response = await axios.post('http://api:3002/waterjugriddle/solve', {
+        // Here we are using process.env.SERVER_URL
+        const response = await axios.post(`${process.env.SERVER_URL}/waterjugriddle/solve`, {
             x_capacity, y_capacity, z_amount_wanted,
         });
         return NextResponse.json(response.data);
