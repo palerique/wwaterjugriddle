@@ -1,38 +1,82 @@
-version: "3"
-
 services:
+  traefik:
+    image: traefik:v2.9
+    command:
+      - --providers.docker=true
+      - --providers.docker.network=app_network
+      - --providers.docker.exposedByDefault=false
+      - --api.insecure=true
+      - --entryPoints.web.address=:80 # for UI
+      - --entryPoints.api.address=:3002 # for API
+      - --entryPoints.dash.address=:10000 # for Dashboard
+      - --log.level=DEBUG
+      - --accesslog=true
+    ports:
+      - 80:80
+      - 3002:3002
+      - 10000:10000 # Expose port for dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - app_network
+    labels:
+      - traefik.http.routers.dashboard.rule=Host(`localhost`)
+      - traefik.http.routers.dashboard.entrypoints=dash
+      - traefik.http.routers.dashboard.service=api@internal
+
   web:
-    container_name: web
     build:
       context: .
       dockerfile: ./apps/web/Dockerfile
     restart: always
-    ports:
-      - 3000:3000
+    #    ports:
+    #      - 3000:3000
     networks:
       - app_network
     environment:
       - SERVER_URL=http://api:3002
+    deploy:
+      replicas: 2
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.myweb.rule=Host(`localhost`)
+        - traefik.http.routers.myweb.entrypoints=web # change 'webui' to 'web'
+        - traefik.http.services.myweb.loadbalancer.server.port=3000
+
   api:
-    container_name: api
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile
     restart: always
-    ports:
-      - 3002:3002
+    #    ports:
+    #      - 3002:3002
     networks:
       - app_network
-  doc:
-    container_name: doc
-    build:
-      context: .
-      dockerfile: ./apps/docs/Dockerfile
-    restart: always
-    ports:
-      - 3001:3001
-    networks:
-      - app_network
+    deploy:
+      replicas: 2
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.myapi.rule=Host(`localhost`)
+        - traefik.http.routers.myapi.entrypoints=api # specifying entrypoints here
+        - traefik.http.services.myapi.loadbalancer.server.port=3002
+
+  #  doc:
+  #    build:
+  #      context: .
+  #      dockerfile: ./apps/docs/Dockerfile
+  #    restart: always
+  #    #    ports:
+  #    #      - 3001:3001
+  #    networks:
+  #      - app_network
+  #    deploy:
+  #      replicas: 1
+  #      labels:
+  #        - traefik.enable=true
+  #        - traefik.http.routers.mydoc.entrypoints=web
+  #        - traefik.http.routers.mydoc.rule=Host(`localhost`)
+  #        - traefik.http.services.mydoc.loadbalancer.server.port=3001
+
   redis:
     container_name: redis
     image: redis
