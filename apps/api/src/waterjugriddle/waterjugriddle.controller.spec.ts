@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WaterJugRiddleController } from './waterJugRiddleController';
-import { WaterJugRiddleService } from './water-jug-riddle.service';
+import { WaterjugriddleController } from './waterjugriddle.controller';
+import { WaterjugriddleService } from './waterjugriddle.service';
 
 describe('WaterjugriddleController', () => {
-  let controller: WaterJugRiddleController;
+  let controller: WaterjugriddleController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [WaterJugRiddleController],
-      providers: [WaterJugRiddleService],
+      controllers: [WaterjugriddleController],
+      providers: [WaterjugriddleService],
     }).compile();
 
-    controller = module.get<WaterJugRiddleController>(WaterJugRiddleController);
+    controller = module.get<WaterjugriddleController>(WaterjugriddleController);
   });
 
   it('should be defined', () => {

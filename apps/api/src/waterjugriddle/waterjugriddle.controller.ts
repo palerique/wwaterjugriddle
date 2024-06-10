@@ -1,14 +1,14 @@
 import { Body, Controller, HttpException, HttpStatus, Inject, Logger, Post } from '@nestjs/common';
-import { WaterJugRiddleService } from './water-jug-riddle.service';
+import { WaterjugriddleService } from './waterjugriddle.service';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 import { SolveRequestDto } from './dto/solveRequest.dto';
 
 @Controller('waterjugriddle')
-export class WaterJugRiddleController {
+export class WaterjugriddleController {
 
-    private readonly logger = new Logger(WaterJugRiddleController.name);
+    private readonly logger = new Logger(WaterjugriddleController.name);
 
-    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache, private readonly waterJugService: WaterJugRiddleService) {
+    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache, private readonly waterJugService: WaterjugriddleService) {
     }
 
     @Post('solve')

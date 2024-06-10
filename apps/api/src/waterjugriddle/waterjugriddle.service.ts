@@ -2,8 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { StepDto } from './dto/step.dto';
 
 @Injectable()
-export class WaterJugRiddleService {
-    private readonly logger = new Logger(WaterJugRiddleService.name);
+export class WaterjugriddleService {
+    private readonly logger = new Logger(WaterjugriddleService.name);
 
     solveWaterJugProblem(x: number, y: number, z: number): StepDto[] | null {
         this.logger.log(`Received solve request with x_capacity=${x}, y_capacity=${y}, z_amount_wanted=${z}`);
@@ -36,12 +36,11 @@ export class WaterJugRiddleService {
             visited.add(stateKey);
             this.logger.log(`Visiting state: ${stateKey} - x = ${currX}, y = ${currY}, z = ${z}`);
 
-            if (currX === z || currY === z || currX + currY === z) {
-                let stepDtos = steps.concat({
-                    step: steps.length + 1, bucketX: currX, bucketY: currY, action: 'Goal reached', status: 'Solved',
-                });
-                this.logger.log('Solution found', stepDtos);
-                return stepDtos;
+            if (currX === z || currY === z) {
+                let goalReachedStep = steps[steps.length - 1];
+                goalReachedStep.status = 'Solved';
+                this.logger.log('Solution found', steps);
+                return steps;
             }
             this.logger.log('Goal not reached');
 
