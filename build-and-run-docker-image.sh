@@ -57,13 +57,11 @@ kubectl apply -f apps/web/k8s/web.yaml
 kubectl port-forward --namespace istio-system svc/prometheus 9090:9090 &
 echo $! > /tmp/prometheus-pid
 
-kubectl port-forward --namespace istio-system svc/grafana 8180:3000 &
+kubectl port-forward --namespace istio-system svc/grafana 8180:8180 &
 echo $! > /tmp/grafana-pid
 
 kubectl port-forward --namespace istio-system svc/kiali 8380:20001 &
 echo $! > /tmp/kiali-pid
 
-POD_NAME="$(kubectl get pods --namespace istio-system -l "app=jaeger" -o jsonpath="{.items[0].metadata.name}")"
-export POD_NAME
-kubectl port-forward --namespace istio-system "$POD_NAME" 8280:16686 &
-echo $! > /tmp/jaeger-pid
+kubectl port-forward --namespace default svc/web-service 3000:3000 &
+kubectl port-forward --namespace default svc/api-service 3002:3002 &
