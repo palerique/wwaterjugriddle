@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
 
 describe('AppController (e2e)', () => {
     let app: INestApplication;
@@ -15,10 +15,24 @@ describe('AppController (e2e)', () => {
         await app.init();
     });
 
-    it('/ (GET)', () => {
+    it('/waterjugriddle/solve (POST)', () => {
         return request(app.getHttpServer())
-            .get('/')
-            .expect(200)
-            .expect('Hello World!');
+            .post('/waterjugriddle/solve')
+            .send({ x_capacity: '3', y_capacity: '5', z_amount_wanted: '4' })
+            .expect(201);
+    });
+
+    it('/waterjugriddle/solve (POST) invalid values', () => {
+        return request(app.getHttpServer())
+            .post('/waterjugriddle/solve')
+            .send({ x_capacity: '-1', y_capacity: '5', z_amount_wanted: '4' })
+            .expect(400);
+    });
+
+    it('/waterjugriddle/solve (POST) missing values', () => {
+        return request(app.getHttpServer())
+            .post('/waterjugriddle/solve')
+            .send({ x_capacity: '3', y_capacity: '5' })
+            .expect(400);
     });
 });

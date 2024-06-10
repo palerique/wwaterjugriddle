@@ -25,6 +25,12 @@
                 "^build"
             ]
         },
+        "test:e2e": {
+            "dependsOn": [
+                "^lint",
+                "^build"
+            ]
+        },
         "dev": {
             "cache": false,
             "persistent": true
