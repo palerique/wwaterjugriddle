@@ -2,25 +2,22 @@ name: Application CI
 on:
   push:
     branches:
-      - main
-  pull_request: { }
-  workflow_dispatch: { }
+      - develop
+
 jobs:
   build:
     name: Build and Test
     timeout-minutes: 15
     runs-on: ubuntu-latest
     permissions: write-all
-    # To use Remote Caching, uncomment the next lines and follow the steps below.
-    # env:
-    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-    #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-
     steps:
       - name: Check out code
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
+
+      - uses: webiny/action-conventional-commits@v1.3.0
+        if: github.event_name == 'pull_request'
 
       - uses: pnpm/action-setup@v4
 
@@ -41,20 +38,26 @@ jobs:
 
       - name: Run Semantic Release
         run: |
-          pnpm dlx semantic-release
+          rm -rf build/libs/*.jar
+          npm ci
+          npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
 
-  # TODO:      - uses: actions/upload-artifact@v2
-  #        if: ${{ always() }}
+  # TODO      - uses: actions/upload-artifact@v4
+  #        if: always()
   #        with:
   #          name: reports
   #          path: "**/build/reports"
 
   dependency-submission:
+
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
