@@ -6,21 +6,17 @@ services:
       - --providers.docker.network=app_network
       - --providers.docker.exposedByDefault=false
       - --api.insecure=true
-      - --entryPoints.web.address=:80 # for UI
-      - --entryPoints.api.address=:3002 # for API
-      - --entryPoints.dash.address=:10000 # for Dashboard
+      - --entryPoints.web.address=:80
       - --log.level=DEBUG
       - --accesslog=true
     ports:
       - 80:80
-      - 3002:3002
-      - 10000:10000 # Expose port for dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - app_network
     labels:
-      - traefik.http.routers.dashboard.rule=Host(`localhost`)
+      - traefik.http.routers.dashboard.rule=Host(`localhost`) && PathPrefix(`/dash`)
       - traefik.http.routers.dashboard.entrypoints=dash
       - traefik.http.routers.dashboard.service=api@internal
 
@@ -39,8 +35,8 @@ services:
       replicas: 2
       labels:
         - traefik.enable=true
-        - traefik.http.routers.myweb.rule=Host(`localhost`)
-        - traefik.http.routers.myweb.entrypoints=web # change 'webui' to 'web'
+        - traefik.http.routers.myweb.rule=Host(`localhost`) && PathPrefix(`/`)
+        - traefik.http.routers.myweb.entrypoints=web
         - traefik.http.services.myweb.loadbalancer.server.port=3000
 
   api:
@@ -56,8 +52,8 @@ services:
       replicas: 2
       labels:
         - traefik.enable=true
-        - traefik.http.routers.myapi.rule=Host(`localhost`)
-        - traefik.http.routers.myapi.entrypoints=api # specifying entrypoints here
+        - traefik.http.routers.myapi.rule=Host(`localhost`) && PathPrefix(`/api`)
+        - traefik.http.routers.myapi.entrypoints=api
         - traefik.http.services.myapi.loadbalancer.server.port=3002
 
   #  doc:

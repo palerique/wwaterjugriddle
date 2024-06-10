@@ -15,6 +15,7 @@ spec:
       containers:
         - name: web
           image: br.com.palerique/water-riddle-web:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
 ---

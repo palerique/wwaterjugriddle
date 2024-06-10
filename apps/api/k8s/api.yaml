@@ -15,6 +15,7 @@ spec:
       containers:
         - name: api
           image: br.com.palerique/water-riddle-api:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3002
 ---
