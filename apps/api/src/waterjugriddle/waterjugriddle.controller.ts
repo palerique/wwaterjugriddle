@@ -1,40 +1,28 @@
-import {
-    Body,
-    Controller,
-    HttpException,
-    HttpStatus,
-    Inject,
-    Logger,
-    Post,
-} from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Inject, Logger, Post } from '@nestjs/common';
 import { WaterjugriddleService } from './waterjugriddle.service';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 import { SolveRequestDto } from './dto/solveRequest.dto';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('waterjugriddle')
 export class WaterjugriddleController {
     private readonly logger = new Logger(WaterjugriddleController.name);
 
-    constructor(
-        @Inject(CACHE_MANAGER) private cacheManager: Cache,
-        private readonly waterJugService: WaterjugriddleService,
-    ) {}
+    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache, private readonly waterJugService: WaterjugriddleService) {
+    }
 
-    @Post('solve')
+    @Post('solve') @ApiOperation({ summary: 'Solve the water jug riddle' }) @ApiResponse({
+        status: '2XX', description: 'Returns the solution to the water jug riddle',
+    }) @ApiResponse({
+        status: 400, description: 'Returns an error message if the input values are invalid',
+    }) @ApiTags('water-jug-riddle') @ApiBody({ type: SolveRequestDto })
     async solve(@Body() body: SolveRequestDto) {
         const { x_capacity, y_capacity, z_amount_wanted } = body;
-        this.logger.log(
-            `Received solve request with x_capacity=${x_capacity}, y_capacity=${y_capacity}, z_amount_wanted=${z_amount_wanted}`,
-        );
+        this.logger.log(`Received solve request with x_capacity=${x_capacity}, y_capacity=${y_capacity}, z_amount_wanted=${z_amount_wanted}`);
 
         if (!x_capacity || !y_capacity || !z_amount_wanted) {
-            this.logger.error(
-                'Invalid input values. Ensure x_capacity, y_capacity, and z_amount_wanted are provided.',
-            );
-            throw new HttpException(
-                'Please provide x_capacity, y_capacity, and z_amount_wanted.',
-                HttpStatus.BAD_REQUEST,
-            );
+            this.logger.error('Invalid input values. Ensure x_capacity, y_capacity, and z_amount_wanted are provided.');
+            throw new HttpException('Please provide x_capacity, y_capacity, and z_amount_wanted.', HttpStatus.BAD_REQUEST);
         }
 
         const x = parseInt(x_capacity, 10);
@@ -42,13 +30,8 @@ export class WaterjugriddleController {
         const z = parseInt(z_amount_wanted, 10);
 
         if (isNaN(x) || isNaN(y) || isNaN(z) || x <= 0 || y <= 0 || z <= 0) {
-            this.logger.error(
-                'Invalid input values. Ensure x, y, and z are positive integers.',
-            );
-            throw new HttpException(
-                'Invalid input values. Ensure x, y, and z are positive integers.',
-                HttpStatus.BAD_REQUEST,
-            );
+            this.logger.error('Invalid input values. Ensure x, y, and z are positive integers.');
+            throw new HttpException('Invalid input values. Ensure x, y, and z are positive integers.', HttpStatus.BAD_REQUEST);
         }
 
         const cacheKey = `${x}-${y}-${z}`;
@@ -63,11 +46,7 @@ export class WaterjugriddleController {
         const solution = this.waterJugService.solveWaterJugProblem(x, y, z);
         if (solution) {
             this.logger.log('Solution found', solution);
-            await this.cacheManager.set(
-                cacheKey,
-                JSON.stringify(solution),
-                1800000,
-            );
+            await this.cacheManager.set(cacheKey, JSON.stringify(solution), 1800000);
             return { solution };
         } else {
             this.logger.warn('No solution possible');
