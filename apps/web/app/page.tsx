@@ -33,7 +33,7 @@ export default function Home() {
                 x_capacity: x, y_capacity: y, z_amount_wanted: z,
             });
 
-            if (response.data.solution === undefined || response.data.solution.length <= 1) {
+            if (response.data.solution === undefined || response.data.solution.length <= 0) {
                 setError(response.data.message || 'An error occurred');
             } else {
                 setSteps(response.data.solution);
