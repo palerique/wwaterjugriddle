@@ -1,0 +1,44 @@
+name: Application CI
+on:
+  push:
+    branches:
+      - main
+  pull_request: { }
+  workflow_dispatch: { }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: latest
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Build with Pnpm
+        run: pnpm run build
+      - name: Run Semantic Release
+        run: |
+          pnpm ci
+          npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: reports
+          path: "**/build/reports"
+  dependency-submission:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: latest
+      # Note: You might need to adjust this step regarding your project needs.
+      #       There is not an exact pnpm equivalent for the gradle dependency-submission step.
+      - name: Install dependencies
+        run: pnpm install

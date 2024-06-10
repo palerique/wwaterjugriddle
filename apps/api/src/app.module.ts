@@ -5,5 +5,4 @@ import { CacheModule } from '@nestjs/cache-manager';
 @Module({
     imports: [CacheModule.register({ isGlobal: true }), WaterjugriddleModule],
 })
-export class AppModule {
-}
+export class AppModule {}

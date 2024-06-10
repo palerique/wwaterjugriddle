@@ -1,1 +1,1 @@
-pnpm dlx lint-staged
+pnpm dlx lint-staged && pnpm format && pnpm lint && pnpm test && pnpm build
