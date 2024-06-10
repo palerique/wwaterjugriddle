@@ -6,11 +6,11 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     const config = new DocumentBuilder()
-    .setTitle('Water Jug Riddle API')
-    .setDescription('The Water Jug Riddle API')
-    .setVersion('1.0')
-    .addTag('water-jug-riddle')
-    .build();
+        .setTitle('Water Jug Riddle API')
+        .setDescription('The Water Jug Riddle API')
+        .setVersion('1.0')
+        .addTag('water-jug-riddle')
+        .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
 
