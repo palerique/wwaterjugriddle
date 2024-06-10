@@ -22,6 +22,25 @@ export default function Home() {
     const [error, setError] = useState("");
     const [currentStep, setCurrentStep] = useState<number>(-1);
 
+    const [showScroll, setShowScroll] = useState(false);
+
+    const checkScrollTop = () => {
+        if (!showScroll && window.pageYOffset > 400) {
+            setShowScroll(true);
+        } else if (showScroll && window.pageYOffset <= 400) {
+            setShowScroll(false);
+        }
+    };
+
+    const scrollTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        window.addEventListener("scroll", checkScrollTop);
+        return () => window.removeEventListener("scroll", checkScrollTop);
+    });
+
     const solveWaterJug = async () => {
         setLoading(true);
         setError("");
@@ -202,6 +221,50 @@ export default function Home() {
                         ))}
                     </div>
                 </div>
+            )}
+            <footer className="fixed inset-x-0 bottom-0 w-full text-center border-t border-grey p-4 bg-amber-500 text-blue-950">
+                <div className="flex justify-center space-x-4 mt-4">
+                    <a
+                        href="http://localhost:3002/api#/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-amber-950"
+                    >
+                        API Documentation
+                    </a>
+                    <a
+                        href="https://github.com/palerique/wwaterjugriddle"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-amber-950"
+                    >
+                        Git Repository
+                    </a>
+                    <a
+                        href="http://localhost:8380/kiali/console/graph/namespaces/?traffic=grpc%2CgrpcRequest%2Chttp%2ChttpRequest%2Ctcp%2CtcpSent&graphType=versionedApp&namespaces=default%2Cistio-system&duration=1800&refresh=10000&layout=kiali-dagre&namespaceLayout=kiali-dagre"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-amber-950"
+                    >
+                        Kiali
+                    </a>
+                    <a
+                        href="https://www.linkedin.com/in/palerique/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-amber-950"
+                    >
+                        Find me on LinkedIn
+                    </a>
+                </div>
+            </footer>
+            {showScroll && (
+                <button
+                    className="fixed right-2 bottom-20 bg-blue-500 text-white p-2 rounded-full"
+                    onClick={scrollTop}
+                >
+                    ^ Top
+                </button>
             )}
         </div>
     );
