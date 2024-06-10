@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e  # fail on any error
 set -x  # display commands being run
+
 # Function to wait for a pod to be running
 function wait_for_pod() {
    namespace=$1
@@ -25,13 +26,16 @@ function wait_for_pod() {
     fi
    done
 }
-./build-docker-images.sh
-./prepare-k8s.sh
-./deploy-k8s.sh
+
+./bashes/build-docker-images.sh
+./bashes/prepare-k8s.sh
+./bashes/deploy-k8s.sh
+
 # Wait for pods to be running before port forwarding
 wait_for_pod istio-system "app.kubernetes.io/name=prometheus"
 wait_for_pod istio-system "app.kubernetes.io/name=grafana"
 wait_for_pod istio-system "app.kubernetes.io/name=kiali"
 wait_for_pod default "app=web"
 wait_for_pod default "app=api"
-./forward-ports.sh
+
+./bashes/forward-ports.sh
