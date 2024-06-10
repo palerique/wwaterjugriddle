@@ -58,8 +58,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with:
-          version: latest
       # Note: You might need to adjust this step regarding your project needs.
       #       There is not an exact pnpm equivalent for the gradle dependency-submission step.
       - name: Install dependencies
