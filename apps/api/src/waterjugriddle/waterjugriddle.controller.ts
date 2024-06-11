@@ -10,7 +10,13 @@ import {
 import { WaterjugriddleService } from './waterjugriddle.service';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 import { SolveRequestDto } from './dto/solveRequest.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+    ApiBody,
+    ApiOperation,
+    ApiResponse,
+    ApiTags,
+    getSchemaPath,
+} from '@nestjs/swagger';
 import { SolutionFoundDto } from './dto/solutionFound.dto';
 import { NoPossibleSolutionDto } from './dto/noPossibleSolution.dto';
 
@@ -26,12 +32,64 @@ export class WaterjugriddleController {
     @Post('solve')
     @ApiOperation({ summary: 'Solve the water jug riddle' })
     @ApiResponse({
-        status: '2XX',
+        status: 200,
         description: 'Returns the solution to the water jug riddle',
+        type: SolutionFoundDto,
+        schema: {
+            example: {
+                solution: [
+                    {
+                        action: 'Fill bucket Y',
+                        bucketX: 0,
+                        bucketY: 5,
+                        step: 1,
+                    },
+                    {
+                        action: 'Pour bucket Y into X',
+                        bucketX: 3,
+                        bucketY: 2,
+                        step: 2,
+                    },
+                    {
+                        action: 'Empty bucket X',
+                        bucketX: 0,
+                        bucketY: 2,
+                        step: 3,
+                    },
+                    {
+                        action: 'Pour bucket Y into X',
+                        bucketX: 2,
+                        bucketY: 0,
+                        step: 4,
+                    },
+                    {
+                        action: 'Fill bucket Y',
+                        bucketX: 2,
+                        bucketY: 5,
+                        step: 5,
+                    },
+                    {
+                        action: 'Pour bucket Y into X',
+                        bucketX: 3,
+                        bucketY: 4,
+                        status: 'Solved',
+                        step: 6,
+                    },
+                ],
+            },
+            $ref: getSchemaPath(SolutionFoundDto),
+        },
     })
     @ApiResponse({
         status: 400,
         description: 'Returns an error message if the input values are invalid',
+        type: NoPossibleSolutionDto,
+        schema: {
+            example: {
+                message: 'No solution is possible',
+            },
+            $ref: getSchemaPath(NoPossibleSolutionDto),
+        },
     })
     @ApiTags('water-jug-riddle')
     @ApiBody({ type: SolveRequestDto })

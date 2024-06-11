@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: web
 spec:
-  replicas: 4
   selector:
     matchLabels:
       app: web
@@ -21,6 +20,14 @@ spec:
           env:
             - name: SERVER_URL
               value: http://api-service:3002
+          resources: # Setting resources limits/requests is needed for HPA to work
+            requests: # Example values, set as per your cluster's limits
+              cpu: "200m"
+              memory: "100Mi"
+            limits:
+              cpu: "500m"
+              memory: "500Mi"
+
 ---
 apiVersion: v1
 kind: Service
@@ -34,3 +41,22 @@ spec:
     - protocol: TCP
       port: 3000
       targetPort: 3000
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: web-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
