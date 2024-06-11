@@ -32,8 +32,7 @@ kubectl label namespace default istio-injection=enabled
 #helm install jaegertracing jaegertracing/jaeger -n observability --wait
 #helm install jaegertracing jaegertracing/jaeger --wait
 
-# Install Redis
-helm install redis bitnami/redis --wait
+./bashes/redis-k8s.sh
 
 kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.22/samples/addons/grafana.yaml
 kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.22/samples/addons/prometheus.yaml

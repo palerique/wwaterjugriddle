@@ -29,6 +29,11 @@ spec:
               value: "redis-master.default.svc.cluster.local"
             - name: REDIS_PORT
               value: "6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-password
+                  key: REDIS_PASSWORD
 ---
 apiVersion: v1
 kind: Service
@@ -53,7 +58,7 @@ spec:
     kind: Deployment
     name: api
   minReplicas: 1
-  maxReplicas: 10
+  maxReplicas: 20
   metrics:
     - type: Resource
       resource:

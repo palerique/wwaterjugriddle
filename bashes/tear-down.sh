@@ -20,6 +20,7 @@ helm uninstall redis || true
 kubectl label namespace default istio-injection- || true
 istioctl uninstall --purge -y || true
 kubectl delete namespace istio-system || true
+kubectl delete secret redis-password || true
 echo "==========================================="
 # Get process IDs (PIDs) of all "kubectl port-forward" commands
 PIDS=$(pgrep -f "kubectl port-forward" || true)

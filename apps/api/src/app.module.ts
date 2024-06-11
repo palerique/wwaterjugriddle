@@ -1,22 +1,25 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { WaterjugriddleModule } from './waterjugriddle/waterjugriddle.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
     imports: [
-        ConfigModule.forRoot(),
-        CacheModule.registerAsync({
-            imports: [ConfigModule],
-            inject: [ConfigService],
-            useFactory: async (configService: ConfigService) => ({
-                store: redisStore,
-                host: configService.get('REDIS_HOST'),
-                port: configService.get('REDIS_PORT'),
-            }),
+        CacheModule.register({
+            isGlobal: true,
+            store: redisStore,
+            host: process.env.REDIS_HOST,
+            port: process.env.REDIS_PORT,
+            password: process.env.REDIS_PASSWORD,
         }),
         WaterjugriddleModule,
     ],
 })
-export class AppModule {}
+export class AppModule {
+    constructor() {
+        const logger = new Logger('AppModule');
+        logger.log(`Redis host: ${process.env.REDIS_HOST}`);
+        logger.log(`Redis port: ${process.env.REDIS_PORT}`);
+        logger.log(`Redis password: ${process.env.REDIS_PASSWORD}`);
+    }
+}
