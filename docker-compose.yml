@@ -20,6 +20,9 @@ services:
       - 3002:3002
     networks:
       - app_network
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
 
   redis:
     container_name: redis

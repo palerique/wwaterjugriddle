@@ -164,4 +164,32 @@ table provides detailed information about each component.
 The following diagram illustrates the architecture of the Water Jug Riddle system, showing how the
 various components interact with each other:
 
-![System Diagram](system_diagram.png)
+![System Diagram](c4-diagram.png)
+
+# Algorithm
+
+This project uses the Breadth First Search (BFS) algorithm to solve the Water Jug Riddle. Here's a
+brief description of the BFS and why it's advantageous over the Depth First Search (DFS) algorithm.
+
+Breadth First Search (BFS) is an algorithm for traversing or searching tree or graph data
+structures. It starts at the tree root or at some arbitrary node of a graph, and explores all of the
+neighbor nodes at the present depth prior to moving on to nodes at the next depth level.
+
+/* Disadvantages of DFS and why BFS is better */
+Depth First Search (DFS) is an algorithm for traversing or searching tree or graph data structures.
+The algorithm starts at the root and explores as far as possible along each branch before
+backtracking. However, in scenarios like the Water Jug Riddle where we need to find the optimal
+solution, DFS can lead to suboptimal results as it may not provide the shortest path to the
+solution.
+
+**BFS Animated Example**
+
+![BFS Animation](https://upload.wikimedia.org/wikipedia/commons/5/5d/Breadth-First-Search-Algorithm.gif)
+
+[BFS explanation and animation source](https://commons.wikimedia.org/wiki/File:Breadth-First-Search-Algorithm.gif)
+
+**DFS Animated Example**
+
+![DFS Animation](https://upload.wikimedia.org/wikipedia/commons/7/7f/Depth-First-Search.gif)
+
+[DFS explanation and animation source](https://commons.wikimedia.org/wiki/File:Depth-First-Search.gif)
