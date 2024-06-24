@@ -107,7 +107,7 @@ server, a web server, and monitoring tools such as Prometheus, Grafana, and Kial
 table provides detailed information about each component.
 
 | Component  | Address                                        | Description                                                     |
-|------------|------------------------------------------------|-----------------------------------------------------------------|
+| ---------- | ---------------------------------------------- | --------------------------------------------------------------- |
 | API Server | [http://localhost:3002](http://localhost:3002) | Provides the backend logic for the Water Jug Riddle application |
 | Web Server | [http://localhost:3000](http://localhost:3000) | Serves the frontend of the Water Jug Riddle application         |
 | Prometheus | [http://localhost:9090](http://localhost:9090) | Collects metrics from the Kubernetes cluster and applications   |
@@ -119,39 +119,39 @@ table provides detailed information about each component.
 
 ### API Server
 
-- **Address:** [http://localhost:3002](http://localhost:3002)
-- **Description:** The API server handles the backend logic for the Water Jug Riddle application,
-  processing requests and interacting with the Redis database.
+-   **Address:** [http://localhost:3002](http://localhost:3002)
+-   **Description:** The API server handles the backend logic for the Water Jug Riddle application,
+    processing requests and interacting with the Redis database.
 
 ### Web Server
 
-- **Address:** [http://localhost:3000](http://localhost:3000)
-- **Description:** The web server provides the frontend interface for users to interact with the
-  Water Jug Riddle application.
+-   **Address:** [http://localhost:3000](http://localhost:3000)
+-   **Description:** The web server provides the frontend interface for users to interact with the
+    Water Jug Riddle application.
 
 ### Prometheus
 
-- **Address:** [http://localhost:9090](http://localhost:9090)
-- **Description:** Prometheus collects and stores metrics from the Kubernetes cluster and the
-  applications running within it. It is used for monitoring and alerting.
+-   **Address:** [http://localhost:9090](http://localhost:9090)
+-   **Description:** Prometheus collects and stores metrics from the Kubernetes cluster and the
+    applications running within it. It is used for monitoring and alerting.
 
 ### Grafana
 
-- **Address:** [http://localhost:8180](http://localhost:8180)
-- **Description:** Grafana is a visualization tool that creates dashboards and graphs from the
-  metrics collected by Prometheus. It helps in monitoring the health and performance of the system.
+-   **Address:** [http://localhost:8180](http://localhost:8180)
+-   **Description:** Grafana is a visualization tool that creates dashboards and graphs from the
+    metrics collected by Prometheus. It helps in monitoring the health and performance of the system.
 
 ### Kiali
 
-- **Address:** [http://localhost:8380](http://localhost:8380)
-- **Description:** Kiali provides observability into the Istio service mesh. It helps in managing
-  traffic, visualizing service dependencies, and troubleshooting issues.
+-   **Address:** [http://localhost:8380](http://localhost:8380)
+-   **Description:** Kiali provides observability into the Istio service mesh. It helps in managing
+    traffic, visualizing service dependencies, and troubleshooting issues.
 
 ### Redis
 
-- **Address:** localhost:6379
-- **Description:** Redis is an in-memory data structure store, used as a database and cache for the
-  application. It stores temporary data and speeds up data retrieval.
+-   **Address:** localhost:6379
+-   **Description:** Redis is an in-memory data structure store, used as a database and cache for the
+    application. It stores temporary data and speeds up data retrieval.
 
 ## System Diagram
 
