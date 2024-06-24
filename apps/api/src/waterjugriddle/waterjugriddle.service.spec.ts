@@ -284,6 +284,116 @@ describe('WaterjugriddleService', () => {
         ]);
     });
 
+    it('should solve correctly with the shortest path III', async () => {
+        const res = service.solveWaterJugProblem(1, 111, 100);
+        // define your expectations for the correct result
+        expect(res).toEqual([
+            {
+                step: 1,
+                bucketX: 0,
+                bucketY: 111,
+                action: 'Fill bucket Y',
+            },
+            {
+                step: 2,
+                bucketX: 1,
+                bucketY: 110,
+                action: 'Pour bucket Y into X',
+            },
+            {
+                step: 3,
+                bucketX: 0,
+                bucketY: 110,
+                action: 'Empty bucket X',
+            },
+            {
+                step: 4,
+                bucketX: 1,
+                bucketY: 109,
+                action: 'Pour bucket Y into X',
+            },
+            {
+                step: 5,
+                bucketX: 0,
+                bucketY: 109,
+                action: 'Empty bucket X',
+            },
+            {
+                step: 6,
+                bucketX: 1,
+                bucketY: 108,
+                action: 'Pour bucket Y into X',
+            },
+            {
+                step: 7,
+                bucketX: 0,
+                bucketY: 108,
+                action: 'Empty bucket X',
+            },
+            {
+                step: 8,
+                bucketX: 1,
+                bucketY: 107,
+                action: 'Pour bucket Y into X',
+            },
+            {
+                step: 9,
+                bucketX: 0,
+                bucketY: 107,
+                action: 'Empty bucket X',
+            },
+            {
+                step: 10,
+                bucketX: 1,
+                bucketY: 106,
+                action: 'Pour bucket Y into X',
+            },
+            { step: 11, bucketX: 0, bucketY: 106, action: 'Empty bucket X' },
+            {
+                step: 12,
+                bucketX: 1,
+                bucketY: 105,
+                action: 'Pour bucket Y into X',
+            },
+            { step: 13, bucketX: 0, bucketY: 105, action: 'Empty bucket X' },
+            {
+                step: 14,
+                bucketX: 1,
+                bucketY: 104,
+                action: 'Pour bucket Y into X',
+            },
+            { step: 15, bucketX: 0, bucketY: 104, action: 'Empty bucket X' },
+            {
+                step: 16,
+                bucketX: 1,
+                bucketY: 103,
+                action: 'Pour bucket Y into X',
+            },
+            { step: 17, bucketX: 0, bucketY: 103, action: 'Empty bucket X' },
+            {
+                step: 18,
+                bucketX: 1,
+                bucketY: 102,
+                action: 'Pour bucket Y into X',
+            },
+            { step: 19, bucketX: 0, bucketY: 102, action: 'Empty bucket X' },
+            {
+                step: 20,
+                bucketX: 1,
+                bucketY: 101,
+                action: 'Pour bucket Y into X',
+            },
+            { step: 21, bucketX: 0, bucketY: 101, action: 'Empty bucket X' },
+            {
+                step: 22,
+                bucketX: 1,
+                bucketY: 100,
+                action: 'Pour bucket Y into X',
+                status: 'Solved',
+            },
+        ]);
+    });
+
     it('should return null if z > x, y', async () => {
         const res = service.solveWaterJugProblem(3, 5, 8);
         expect(res).toBeNull();
